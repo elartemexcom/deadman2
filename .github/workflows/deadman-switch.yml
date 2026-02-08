@@ -24,7 +24,7 @@ jobs:
       - name: Decide which index.html should be live
         shell: bash
         env:
-          SECRET_INDEX_HTML: ${{ secrets.SECRET_INDEX_HTML }}
+          SECRET_INDEX_HTML: ${{ secrets.SECRET_INDEX_HTML_DEADMAN2 }}
         run: |
           set -euo pipefail
 
@@ -44,7 +44,7 @@ jobs:
           else
             echo "⚠️ Check-in stale or missing. Publishing secret index."
             if [[ -z "${SECRET_INDEX_HTML:-}" ]]; then
-              echo "ERROR: SECRET_INDEX_HTML is not set."
+              echo "ERROR: SECRET_INDEX_HTML_DEADMAN2 is not set."
               exit 1
             fi
             printf "%s" "$SECRET_INDEX_HTML" > index.html

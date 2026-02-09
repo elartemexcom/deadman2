@@ -2,207 +2,180 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>deadman switch</title>
-
-  <!-- 2013-ish vibe: Roboto -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deadman</title>
   <style>
     :root{
-      --bg0:#0b1220;
-      --bg1:#0f1a2d;
+      --bg:#0b0c10;
+      --panel:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
       --text:rgba(255,255,255,.92);
       --muted:rgba(255,255,255,.62);
-      --accent:#00fff0;
-      --accent2:#8a7dff;
-      --stroke:rgba(255,255,255,.12);
-      --shadow:0 28px 90px rgba(0,0,0,.65);
-      --radius:16px;
     }
-
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 700px at 15% 0%, rgba(255,255,255,.08), transparent),
+        radial-gradient(900px 600px at 85% 10%, rgba(255,255,255,.06), transparent),
+        var(--bg);
       color:var(--text);
-      background:
-        radial-gradient(900px 600px at 15% 10%, rgba(0,255,240,.10), transparent 60%),
-        radial-gradient(700px 500px at 85% 20%, rgba(138,125,255,.12), transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
-      overflow:hidden;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-
-    /* subtle diagonal 2013-tech texture */
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        repeating-linear-gradient(
-          135deg,
-          rgba(255,255,255,.02) 0px,
-          rgba(255,255,255,.02) 6px,
-          transparent 6px,
-          transparent 18px
-        );
-      opacity:.55;
+    header{
+      position:sticky;
+      top:0;
+      z-index:10;
+      background:rgba(0,0,0,.45);
+      border-bottom:1px solid var(--border);
+      backdrop-filter: blur(10px);
     }
-
     .wrap{
-      height:100%;
-      display:grid;
-      place-items:center;
-      padding:22px;
+      max-width:1100px;
+      margin:0 auto;
+      padding:20px 16px;
     }
-
-    .panel{
-      width:min(760px, 96vw);
-      border-radius:var(--radius);
-      border:1px solid rgba(255,255,255,.10);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
     .top{
       display:flex;
+      flex-direction:column;
       align-items:center;
-      gap:14px;
-      padding:18px 18px 12px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.05));
+      gap:6px;
+      text-align:center;
     }
-
-    .logo{
-      width:46px;
-      height:46px;
-      border-radius:12px;
-      display:grid;
-      place-items:center;
-      font-weight:700;
-      letter-spacing:.2px;
-      color:rgba(0,255,240,.96);
-      border:1px solid rgba(0,255,240,.30);
-      background:linear-gradient(180deg, rgba(0,255,240,.18), rgba(0,255,240,.05));
-      box-shadow:0 16px 50px rgba(0,255,240,.12);
-      user-select:none;
-    }
-
     h1{
       margin:0;
-      font-size:18px;
-      font-weight:700;
-      letter-spacing:.4px;
-    }
-
-    .sub{
-      margin:4px 0 0;
-      color:var(--muted);
-      font-size:13px;
-      font-weight:300;
-    }
-
-    .body{ padding:18px; }
-
-    .desc{
-      margin:0;
-      line-height:1.6;
       font-size:14px;
-      color:rgba(255,255,255,.80);
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      font-weight:700;
     }
-
-    .status{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
+    .sub{
       font-size:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.22);
-      color:rgba(255,255,255,.74);
-      white-space:nowrap;
+      color:var(--muted);
     }
-
-    .dot{
-      width:10px; height:10px;
-      border-radius:99px;
-      background:rgba(0,255,240,.90);
-      box-shadow:0 0 0 4px rgba(0,255,240,.12);
+    .grid{
+      display:grid;
+      gap:24px;
+      padding:40px 0 48px;
+      justify-items:center;
     }
-
-    .soon{
-      border-color:rgba(138,125,255,.28);
+    .card{
+      width:100%;
+      max-width:900px;
+      border:1px solid var(--border);
+      background:var(--panel);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
     }
-    .soon .dot{
-      background:rgba(138,125,255,.92);
-      box-shadow:0 0 0 4px rgba(138,125,255,.12);
-    }
-
-    .maybe .dot{
-      background:rgba(255,255,255,.60);
-      box-shadow:0 0 0 4px rgba(255,255,255,.08);
-    }
-
-    .footer{
+    .bar{
       display:flex;
       justify-content:space-between;
-      gap:12px;
-      padding:14px 18px 18px;
-      border-top:1px solid rgba(255,255,255,.08);
-      color:rgba(255,255,255,.45);
-      font-size:12px;
+      align-items:center;
+      padding:10px 14px;
+      border-bottom:1px solid var(--border);
+      background:rgba(0,0,0,.25);
     }
-
-    .mono{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      opacity:.9;
+    .tag{
+      font-size:11px;
+      letter-spacing:.18em;
+      color:var(--muted);
+      text-transform:uppercase;
+    }
+    .hint{
+      font-size:12px;
+      color:var(--muted);
+    }
+    iframe{
+      width:100%;
+      height:80vh;
+      border:0;
+      display:block;
+      background:#fff;
+    }
+    .footer{
+      padding:24px 0 12px;
+      font-size:12px;
+      color:var(--muted);
+      text-align:center;
+    }
+    @media (min-width:1000px){
+      iframe{ height:75vh; }
     }
   </style>
 </head>
 
 <body>
+<header>
   <div class="wrap">
-    <div class="panel">
-      <div class="top">
-        <div class="logo">◇</div>
-        <div>
-          <h1>deadman switch</h1>
-          <p class="sub">not dead yet.</p>
-        </div>
-      </div>
-
-      <div class="body">
-        <p class="desc">
-          This page is intentionally minimal.
-          If it ever changes unexpectedly, the switch tripped.
-        </p>
-
-        <div class="status">
-          <span class="pill"><span class="dot"></span>status: alive</span>
-          <span class="pill soon"><span class="dot"></span>coming soon</span>
-          <span class="pill maybe"><span class="dot"></span>maybe.</span>
-        </div>
-      </div>
-
-      <div class="footer">
-        <span class="mono">deadman-switch</span>
-        <span>© (future)</span>
-      </div>
+    <div class="top">
+      <h1>Deadman</h1>
+      <div class="sub">If you can read this, the switch flipped.</div>
     </div>
   </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 01</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vSWMRB5KDwCDAxdbF4B3cnco5IH9yrRL5hoQaoY0TkIDLU8hY1HY0MuEMD9GalpBluNt-OKQMJ9vtGL/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 02</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vScbxl0MbbsUXud91aeWlAo2kfc6PnlR1TdgM5-V-b943qrDGwmuh0EbFMB1-8yPqTJnEDxfnkOh4k7/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 03</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vQbWk4UhWP1dWuux1yUVzJxZKi7DUXnVlAqG5iRqs635-VC7ee7LTPyczMW4eYon8_OObJp06OUKgKW/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 04</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vQDFF4HrLjW3SX8GnfUk9CG5QtS_HTgF-w2TJEyZUVrUUrk-V3zZOCYr9LNJFyDGTfzMn0yjQAKYRhM/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 05</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLHRrPk7RUXw1wd3i5IWyOc07qQ0h5Pltg9SKFpkEhZXiE3epbZLi1o9KX7eCUslVPre2N4PPctQ8c/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 06</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vQZAx16HGu3N9yLOQn8i59zcluxmEGbwiqMH7OOWz9wTfPCNrLya5QTufqfhiyn05phbsfkVc223Y9S/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 07</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vR2qKn0mkc0EZj_-sWXtVeP49HWqj4RBlWPCBES5Ss_Px3aDQoMJQfq0X-MJquTFzFdzs6T1lPiNJ2u/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 08</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vSA5h98phSx2CTzdjy8uQ8UL9calECDoIwz4ruLxpBOyBssh49FyBBS_8CN3JwV_uUDbqOeZoxL_6yu/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 09</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vSv-LFKXUt3fYqs4uwQ2HmX3-jtV9a4kMbvz6cBtD8Q9c46td1N1gkcNVBY9wQFF7CA40Gp8mxB_mMR/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 10</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vQ_-vi8KX2zx1XJovKtEbKf4dh3aOf5IAGOcsGzj96fTxnv5tHSV_SwoOPyAqNTSiVodUCR6fxbpGA2/pub?embedded=true"></iframe>
+    </section>
+
+    <section class="card">
+      <div class="bar"><div class="tag">Document 11</div><div class="hint">scroll inside</div></div>
+      <iframe src="https://docs.google.com/document/d/e/2PACX-1vTlftb2DGwbSXzd-_QC7jd2nPR2dN0GJJXSYQAO3IWSuMYTMEc2U2GLahAg5MHzQ1Z4qp9KNtpDR2QC/pub?embedded=true"></iframe>
+    </section>
+
+  </div>
+
+  <div class="footer">© Deadman</div>
+</main>
 </body>
 </html>
